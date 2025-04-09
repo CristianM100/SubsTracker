@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">SubsTracker</string>
+    <string name="add_a_subscription">+ Add a subscription</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="next_payment">Next Payment</string>
+    <string name="cycle">Cycle</string>
+    <string name="amount">Amount</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="remind_me">Remind me</string>
+    <string name="currency">Currency</string>
+    <string name="save">Save</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="pause">Pause</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="general">General</string>
+    <string name="categories">Categories</string>
+    <string name="payment_methods">Payment Methods</string>
+</resources>
