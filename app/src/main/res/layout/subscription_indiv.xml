@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/widgetColor"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/titlecolor"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/descolor"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="Description text that can span multiple lines" />
+
+        <!-- Date Row -->
+        <ImageView
+            android:id="@+id/calendar_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/clock_icon"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:tint="@color/timecolor" />
+        <!--app:srcCompat="@drawable/calendar"-->
+        <!--android:contentDescription="@string/calendar_icon"-->
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/timecolor"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/calendar_icon"
+            app:layout_constraintStart_toEndOf="@id/calendar_icon"
+            app:layout_constraintTop_toTopOf="@id/calendar_icon"
+            tools:text="May 15, 2023" />
+
+        <!-- Time Row -->
+        <ImageView
+            android:id="@+id/clock_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/calendar_icon"
+            app:tint="@color/timecolor" />
+           <!-- app:srcCompat="@drawable/clock"-->
+           <!--android:contentDescription="@string/clock_icon"-->
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/timecolor"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/clock_icon"
+            app:layout_constraintStart_toEndOf="@id/clock_icon"
+            app:layout_constraintTop_toTopOf="@id/clock_icon"
+            tools:text="10:30 AM" />
+
+        <!-- Guideline to separate text content from metadata -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="148dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
