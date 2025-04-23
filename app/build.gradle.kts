@@ -1,13 +1,17 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-parcelize")
     id("org.jetbrains.kotlin.kapt")
+
 }
 
 android {
     namespace = "com.example.substracker"
     compileSdk = 35
+
+
 
     defaultConfig {
         applicationId = "com.example.substracker"
@@ -37,8 +41,17 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion("1.9.24")
+        }
+    }
+}
+
 dependencies {
 
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
     implementation(libs.androidx.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.androidx.core.ktx)
