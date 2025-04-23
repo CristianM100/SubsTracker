@@ -3,16 +3,15 @@ package com.example.substracker
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.DatePicker
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_task_update.*
 import java.util.*
 
 class TaskUpdate : AppCompatActivity(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
+    // Date & time variables
     private var currentDay = 0
     private var currentMonth = 0
     private var currentYear = 0
@@ -27,111 +26,121 @@ class TaskUpdate : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Time
 
     private lateinit var taskViewModel: TaskViewModel
 
+    // UI components
+    private lateinit var updateTaskTitleBox: EditText
+    private lateinit var updateDescTextBox: EditText
+    private lateinit var updateDateTextBox: TextView
+    private lateinit var updateTimeTextBox: TextView
+    private lateinit var updateDateButton: Button
+    private lateinit var updateTimeButton: Button
+    private lateinit var updateTaskButton: Button
+    private lateinit var deleteTaskButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_task_update) // load UI
+        setContentView(R.layout.activity_task_update)
 
-        //  Get the task passed from the list
-        val task = intent.getParcelableExtra<Task>("extra_item")
+        // 🔧 Link UI views using findViewById
+        updateTaskTitleBox = findViewById(R.id.updateTaskTitleBox)
+        updateDescTextBox = findViewById(R.id.updateDescTextBox)
+        updateDateTextBox = findViewById(R.id.updateDateTextBox)
+        updateTimeTextBox = findViewById(R.id.updateTimeTextBox)
+        updateDateButton = findViewById(R.id.updateDateButton)
+        updateTimeButton = findViewById(R.id.updateTimeButton)
+        updateTaskButton = findViewById(R.id.updateTaskButton)
+        deleteTaskButton = findViewById(R.id.deleteTaskButton)
 
-        // populate fields
+        // 📦 Retrieve task from intent
+        val task = intent.getParcelableExtra<Task>("extra_item") ?: return
+
+        // Populate views with task data
         updateTaskTitleBox.setText(task.title)
         updateDescTextBox.setText(task.desc)
         updateDateTextBox.text = task.date
         updateTimeTextBox.text = task.time
 
-        // date and time pickers
-        updateDateButton.setOnClickListener() {
+        // 🗓 Show DatePicker on button click
+        updateDateButton.setOnClickListener {
             getDateCalendar()
-            DatePickerDialog(this,this,currentYear,currentMonth,currentDay).show()
+            DatePickerDialog(this, this, currentYear, currentMonth, currentDay).show()
         }
 
-        updateTimeButton.setOnClickListener() {
+        // 🕒 Show TimePicker on button click
+        updateTimeButton.setOnClickListener {
             getTimeCalendar()
-            TimePickerDialog(this,this,currentHour,currentMinute,false).show()
+            TimePickerDialog(this, this, currentHour, currentMinute, false).show()
         }
 
-        // initialize ViewModel
+        // 🔁 ViewModel setup
         taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
 
-        // update a task
-        updateTaskButton.setOnClickListener() {
+        // ✅ Update task
+        updateTaskButton.setOnClickListener {
             var flag = true
-            if(updateTaskTitleBox.text.equals("")) {
+
+            if (updateTaskTitleBox.text.isEmpty()) {
                 showToast("Please enter a valid title!")
                 flag = false
             }
-            if(updateDateTextBox.text.equals("")) {
+            if (updateDateTextBox.text.isEmpty()) {
                 showToast("Please enter a valid date!")
                 flag = false
             }
-            if(updateTimeTextBox.text.equals("")) {
-                flag = false
+            if (updateTimeTextBox.text.isEmpty()) {
                 showToast("Please enter a valid time!")
+                flag = false
             }
 
-            if(flag)
-            {
-                val title = updateTaskTitleBox.text.toString()
-                var desc = "No Description"
-                if(updateDescTextBox.text.isNotEmpty())
-                    desc = updateDescTextBox.text.toString()
-                val date = updateDateTextBox.text.toString()
-                val time = updateTimeTextBox.text.toString()
-
-                val updatedTask = Task(task.id,title,desc,date,time)
-
+            if (flag) {
+                val updatedTask = Task(
+                    id = task.id,
+                    title = updateTaskTitleBox.text.toString(),
+                    desc = updateDescTextBox.text.ifEmpty { "No Description" }.toString(),
+                    date = updateDateTextBox.text.toString(),
+                    time = updateTimeTextBox.text.toString()
+                )
                 taskViewModel.update(updatedTask)
                 showToast("Task successfully updated!")
                 finish()
             }
         }
 
-        // delete a task
-        deleteTaskButton.setOnClickListener() {
+        // 🗑 Delete task with confirmation
+        deleteTaskButton.setOnClickListener {
             AlertDialog.Builder(this)
-                .setMessage("Are you sure you want delete this task?")
-                .setPositiveButton("YES") { dialog, whichButton ->
+                .setMessage("Are you sure you want to delete this task?")
+                .setPositiveButton("YES") { _, _ ->
                     taskViewModel.delete(task)
-                    showToast("Task deleted sucessfully!")
+                    showToast("Task deleted successfully!")
                     finish()
                 }
-                .setNegativeButton("NO") { dialog, whichButton ->
-
-                }
+                .setNegativeButton("NO", null)
                 .show()
         }
     }
 
-    // Shows a confirmation dialog if the user tries to go back:
     override fun onBackPressed() {
         AlertDialog.Builder(this)
             .setMessage("Are you sure you want to go back?")
-            .setPositiveButton(android.R.string.ok) { dialog, whichButton ->
+            .setPositiveButton(android.R.string.ok) { _, _ ->
                 super.onBackPressed()
             }
-            .setNegativeButton(android.R.string.cancel) { dialog, whichButton ->
-
-            }
+            .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
 
-    private fun showToast(message: String)
-    {
-        val toast = Toast.makeText(this,message, Toast.LENGTH_SHORT)
-        toast.show()
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun getDateCalendar()
-    {
+    private fun getDateCalendar() {
         val cal = Calendar.getInstance()
         currentDay = cal.get(Calendar.DAY_OF_MONTH)
-        currentMonth  = cal.get(Calendar.MONTH)
+        currentMonth = cal.get(Calendar.MONTH)
         currentYear = cal.get(Calendar.YEAR)
     }
 
-    private fun getTimeCalendar()
-    {
+    private fun getTimeCalendar() {
         val cal = Calendar.getInstance()
         currentHour = cal.get(Calendar.HOUR_OF_DAY)
         currentMinute = cal.get(Calendar.MINUTE)
@@ -142,57 +151,30 @@ class TaskUpdate : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Time
         savedMonth = month
         savedYear = year
 
-        var flag=1
-        if(savedYear<currentYear)
-            flag=-1
-        else if(savedYear==currentYear && savedMonth<currentMonth)
-            flag=-1
-        else if(savedYear==currentYear && savedMonth==currentMonth && savedDay<currentDay)
-            flag=-1
-
-        if(flag==1)
-        {
-            var displayDay = savedDay.toString()
-            var displayMonth = savedMonth.toString()
-
-            if(savedDay<10)
-                displayDay = "0$displayDay"
-            if(savedMonth<10)
-                displayMonth = "0$displayMonth"
-
-            updateDateTextBox.text = "$displayDay / $displayMonth / $savedYear"
+        val isValidDate = when {
+            savedYear < currentYear -> false
+            savedYear == currentYear && savedMonth < currentMonth -> false
+            savedYear == currentYear && savedMonth == currentMonth && savedDay < currentDay -> false
+            else -> true
         }
-        else
+
+        if (isValidDate) {
+            val displayDay = savedDay.toString().padStart(2, '0')
+            val displayMonth = savedMonth.toString().padStart(2, '0')
+            updateDateTextBox.text = "$displayDay / $displayMonth / $savedYear"
+        } else {
             showToast("Please enter a valid date!")
+        }
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-
         savedHour = hourOfDay
         savedMinute = minute
 
-        var displayHour: String
-        var displayMinute: String
-        var status: String
-
-        if(savedHour>12)
-        {
-            displayHour=(savedHour-12).toString()
-            status="PM"
-        }
-        else
-        {
-            displayHour = savedHour.toString()
-            status="AM"
-        }
-
-        displayMinute = savedMinute.toString()
-
-        if(displayHour.toInt()<10)
-            displayHour="0$displayHour"
-
-        if(displayMinute.toInt()<10)
-            displayMinute="0$displayMinute"
+        val status = if (savedHour >= 12) "PM" else "AM"
+        val hour12 = if (savedHour > 12) savedHour - 12 else savedHour
+        val displayHour = hour12.toString().padStart(2, '0')
+        val displayMinute = savedMinute.toString().padStart(2, '0')
 
         updateTimeTextBox.text = "$displayHour:$displayMinute  $status"
     }
