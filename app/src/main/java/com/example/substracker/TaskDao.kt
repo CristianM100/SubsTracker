@@ -25,6 +25,5 @@ updateTask()	Modify an existing task	Also uses Room’s auto-generated query
 getAllTasks()	Fetch all tasks as LiveData	Automatically updates UI on DB changes
 This interface is what your Repository uses to talk to the database.
 Room handles all the SQL under the hood! */
-}
-}
+
 
