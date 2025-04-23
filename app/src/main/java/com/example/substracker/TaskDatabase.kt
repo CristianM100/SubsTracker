@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 /* Declares a Room database with the Task entity (your table).
 version = 2: DB version (used for migration if schema changes).
 exportSchema = false: Don’t save the schema version into a folder (used during development to reduce clutter). */
-@Database(entities = arrayOf(Task::class), version = 2, exportSchema = false)
+@Database(entities = arrayOf(Task::class), version = 1, exportSchema = false)
 abstract class TaskDatabase: RoomDatabase() { // Inherits from RoomDatabase.
     abstract fun taskDao(): TaskDao // You must define at least one abstract method that returns your DAO (taskDao())
 
