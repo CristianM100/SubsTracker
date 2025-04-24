@@ -44,14 +44,14 @@ android {
 configurations.all {
     resolutionStrategy.eachDependency {
         if (requested.group == "org.jetbrains.kotlin") {
-            useVersion("1.9.24")
+            useVersion("2.1.10")
         }
     }
 }
 
 dependencies {
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
+    implementation(libs.kotlin.stdlib)
     implementation(libs.androidx.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.androidx.core.ktx)

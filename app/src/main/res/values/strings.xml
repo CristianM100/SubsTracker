@@ -35,4 +35,6 @@
     <string name="clock_icon">clock icon</string>
     <string name="calendar_icon">calendar icon</string>
     <string name="delete_task">Delete Task</string>
+    <string name="add_a_description">add a description</string>
+    <string name="add_a_task">add a task</string>
 </resources>

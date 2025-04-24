@@ -3,8 +3,11 @@ package com.example.substracker
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.widget.*
+import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import java.util.*
@@ -36,6 +39,7 @@ class TaskUpdate : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Time
     private lateinit var updateTaskButton: Button
     private lateinit var deleteTaskButton: Button
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_update)
@@ -51,7 +55,9 @@ class TaskUpdate : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Time
         deleteTaskButton = findViewById(R.id.deleteTaskButton)
 
         // 📦 Retrieve task from intent
-        val task = intent.getParcelableExtra<Task>("extra_item") ?: return
+       // val task = intent.getParcelableExtra<Task>("extra_item") ?: return
+        val task = intent.getParcelableExtra("extra_item", Task::class.java) ?: return
+
 
         // Populate views with task data
         updateTaskTitleBox.setText(task.title)
@@ -72,7 +78,7 @@ class TaskUpdate : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Time
         }
 
         // 🔁 ViewModel setup
-        taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
+        taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
 
         // ✅ Update task
         updateTaskButton.setOnClickListener {
@@ -117,17 +123,18 @@ class TaskUpdate : AppCompatActivity(), DatePickerDialog.OnDateSetListener, Time
                 .setNegativeButton("NO", null)
                 .show()
         }
+
+        onBackPressedDispatcher.addCallback(this) {
+            AlertDialog.Builder(this@TaskUpdate)
+                .setMessage("Are you sure you want to go back?")
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    finish()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
     }
 
-    override fun onBackPressed() {
-        AlertDialog.Builder(this)
-            .setMessage("Are you sure you want to go back?")
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                super.onBackPressed()
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

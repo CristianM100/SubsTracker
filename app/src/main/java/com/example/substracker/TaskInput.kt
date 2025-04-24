@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.addCallback
 import java.util.*
 
 
@@ -107,17 +108,17 @@ class TaskInput : AppCompatActivity(), DatePickerDialog.OnDateSetListener, TimeP
                 finish()
             }
         }
-    }
 
-    // Handle back press with a confirmation dialog for unsaved changes
-    override fun onBackPressed() {
-        AlertDialog.Builder(this)
-            .setMessage("You have unsaved changes. Are you sure you want to go back?")
-            .setPositiveButton(android.R.string.ok) { dialog, whichButton ->
-                super.onBackPressed()
-            }
-            .setNegativeButton(android.R.string.cancel) { dialog, whichButton -> }
-            .show()
+        // Handle back press with a confirmation dialog for unsaved changes
+        onBackPressedDispatcher.addCallback(this) {
+            AlertDialog.Builder(this@TaskInput)
+                .setMessage("Are you sure you want to go back?")
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    finish()
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
     }
 
     // Helper function to show a Toast message

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 
 // RecyclerView Adapter that binds a list of Task objects to the UI
 class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.MyViewHolder>() {
@@ -16,11 +15,11 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.MyViewHolder>() {
 
     // ViewHolder class holds references to all views in a single item layout
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title = itemView.findViewById<TextView>(R.id.title)             // Task title TextView
-        val description = itemView.findViewById<TextView>(R.id.description) // Task description TextView
-        val date = itemView.findViewById<TextView>(R.id.date)               // Task date TextView
-        val time = itemView.findViewById<TextView>(R.id.time)               // Task time TextView
-        val itemLayout = itemView.findViewById<View>(R.id.itemLayout)       // Root layout of the item
+        val title: TextView = itemView.findViewById(R.id.title)             // Task title TextView
+        val description: TextView = itemView.findViewById(R.id.description) // Task description TextView
+        val date: TextView = itemView.findViewById(R.id.date)               // Task date TextView
+        val time: TextView = itemView.findViewById(R.id.time)               // Task time TextView
+        val itemLayout: View = itemView.findViewById(R.id.itemLayout)       // Root layout of the item
     }
 
     // Called when RecyclerView needs a new ViewHolder (a new row)
